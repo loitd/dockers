@@ -15,8 +15,7 @@ LABEL   com.innneka.author="Tran Duc Loi" \
 # $ docker rm -f tmp-nginx
 RUN mkdir -p /etc/nginx/snippets && \
 mkdir -p /var/www/html && \
-mkdir -p /opt/loitd && \
-chmod -R 755 /opt/loitd
+mkdir -p /opt/loitd
 
 # With custom nginx configuration file
 # In dockerfile
@@ -30,7 +29,8 @@ ADD https://wordpress.org/latest.tar.gz /var/www/html
 # docker run --name mynginx -v /host/path/nginx.conf:/etc/nginx/nginx.conf:ro -d -p 8080:80 nginx
 # docker build -t nginx-php-fastcgi-img . ---> to build this Dockerfile
 # docker run --name nginx-php-fastcgi-app -d -p 8080:80 nginx-php-fastcgi-img ---> to run this image
-RUN /opt/loitd/installer.sh
+RUN chmod -R 755 /opt/loitd && \
+    /opt/loitd/installer.sh
 
 WORKDIR /var/www/html
 # Remove default.conf
