@@ -5,6 +5,7 @@ services:
   web:
     # Build from default dockerfile
     build: .
+    image: loitd/nginx-php7
     # Command to execute
     # command: python manage.py runserver 0.0.0.0:8000
     # command: /opt/loitd/start.sh
