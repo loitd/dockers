@@ -1,5 +1,5 @@
 # User ver 3
-version: '3'
+version: '2'
 
 services:
   web:
