@@ -13,15 +13,18 @@ RUN mkdir -p /etc/nginx/snippets && \
     mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig && \
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 
-ADD --chown=nginx:nginx nginx.conf /etc/nginx/
-ADD --chown=nginx:nginx conf.d/default.conf /etc/nginx/conf.d/
-ADD --chown=nginx:nginx snippets/fastcgi-php.conf /etc/nginx/snippets/
-ADD --chown=nginx:nginx snippets/snakeoil.conf /etc/nginx/snippets/
+# Please specify ABSOLUTE source path because docker will deploy on a temp dir -> file not found
+ADD --chown=nginx:nginx /root/dockers/nginx.conf /etc/nginx/
+ADD --chown=nginx:nginx /root/dockers/conf.d/default.conf /etc/nginx/conf.d/
+ADD --chown=nginx:nginx /root/dockers/snippets/fastcgi-php.conf /etc/nginx/snippets/
+ADD --chown=nginx:nginx /root/dockers/snippets/snakeoil.conf /etc/nginx/snippets/
+ADD --chown=nginx:nginx /root/dockers/start.sh /opt/loitd/
 # ADD https://wordpress.org/latest.tar.gz /var/www/html
 
 RUN apk --no-cache add openrc php7 php7-fpm php7-json php7-zlib php7-xml php7-phar php7-iconv php7-mcrypt curl php7-curl php7-openssl php7-gd && \
     mkdir -p /var/run/php && \
     chown nginx:nginx /var/run/php/ && \
+    chmod -R +x /opt/loitd && \
     PHP_FPM_USER="nginx" && \
     PHP_FPM_GROUP="nginx" && \
     PHP_FPM_LISTEN_MODE="0660" && \
@@ -46,7 +49,7 @@ RUN apk --no-cache add openrc php7 php7-fpm php7-json php7-zlib php7-xml php7-ph
     sed -i "s|;*upload_max_filesize =.*|upload_max_filesize = ${PHP_MAX_UPLOAD}|i" /etc/php7/php.ini && \
     sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php7/php.ini && \
     sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php7/php.ini && \
-    sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= ${PHP_CGI_FIX_PATHINFO}|i" /etc/php7/php.ini && \
+    sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= ${PHP_CGI_FIX_PATHINFO}|i" /etc/php7/php.ini
 
-CMD [ "rc-service", "php-fpm7", "start"]
+CMD [ "/root/dockers/start.sh"]
 # ENTRYPOINT [ "/opt/loitd/start.sh" ]

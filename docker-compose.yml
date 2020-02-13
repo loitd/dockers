@@ -1,4 +1,5 @@
-# User ver 3
+# User ver 3 -> some program can not use ver3 -> stay with v2
+# Yes, just put Dockerfile path into docker-compose then they will find and read
 version: '2'
 
 services:
