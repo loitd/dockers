@@ -1,20 +1,29 @@
 # User ver 3 -> some program can not use ver3 -> stay with v2
 # Yes, just put Dockerfile path into docker-compose then they will find and read
+# https://docs.docker.com/compose/compose-file/compose-file-v2/
 version: '2'
 
 services:
-  web:
+  nginx:
     # Build from default dockerfile
     build: .
-    image: loitd/nginx-php7:dev
-    # Command to execute
-    # command: python manage.py runserver 0.0.0.0:8000
-    # command: /opt/loitd/start.sh
-    # Overwrite entrypoint if need
-    # entrypoint: [php, -d, vendor/bin/phpunit]
+    image: loitd/nginx:dev
+    
+    environment: 
+      - PHPFPMURL=phpfpm7:9001
     volumes:
       - ./html:/var/www/html
     ports:
-      - "80:80"
-    # depends_on:
-    #   - db
+      # -p 192.168.1.100:8080:80	Map TCP port 80 in the container to port 8080 on the Docker host for connections to host IP 192.168.1.100.
+      # host port: container port
+      - "8080:80"
+    depends_on:
+      - phpfpm7
+    links: 
+      - phpfpm7
+  phpfpm7:
+    image: phpdockerio/php7-fpm:latest
+    ports: 
+      - "9001:9000"
+    # Debian Jessie PHP 7.0 FPM container image 
+# docker-compose up -d --remove-orphans
