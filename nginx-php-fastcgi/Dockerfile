@@ -24,7 +24,7 @@ ADD --chown=nginx:nginx conf.d/default.conf /opt/loitd
 ADD --chown=nginx:nginx snippets/fastcgi-php.conf /opt/loitd
 ADD ./installer.sh /opt/loitd 
 ADD ./start.sh /opt/loitd 
-ADD https://wordpress.org/latest.tar.gz /var/www/html
+# ADD https://wordpress.org/latest.tar.gz /var/www/html
 
 # docker run --name mynginx -v /host/path/nginx.conf:/etc/nginx/nginx.conf:ro -d -p 8080:80 nginx
 # docker build -t nginx-php-fastcgi-img . ---> to build this Dockerfile

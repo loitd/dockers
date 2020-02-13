@@ -5,7 +5,7 @@ services:
   web:
     # Build from default dockerfile
     build: .
-    image: loitd/nginx-php7
+    image: loitd/nginx-php7:dev
     # Command to execute
     # command: python manage.py runserver 0.0.0.0:8000
     # command: /opt/loitd/start.sh
@@ -13,7 +13,6 @@ services:
     # entrypoint: [php, -d, vendor/bin/phpunit]
     volumes:
       - ./html:/var/www/html
-      - ./snippets:/etc/nginx/snippets
     ports:
       - "80:80"
     # depends_on:

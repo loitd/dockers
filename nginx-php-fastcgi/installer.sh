@@ -1,11 +1,12 @@
-echo RECONFIGURE nginx
+#!/bin/ash
+echo RECONFIGURE nginx - Please REMEMBER to add bin/ash on alpine - 
 mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 ln -ns /opt/loitd/nginx.conf /etc/nginx/nginx.conf
 ln -ns /opt/loitd/default.conf /etc/nginx/conf.d/default.conf
 ln -ns /opt/loitd/fastcgi-php.conf /etc/nginx/snippets/fastcgi-php.conf
-echo BEGIN INSTALLING php7
-apk --no-cache add php7 php7-fpm php7-json php7-zlib php7-xml php7-phar php7-iconv php7-mcrypt curl php7-curl php7-openssl php7-gd
+echo BEGIN INSTALLING php7+openrc - The rc-update tool is a part of the openrc package - 
+apk --no-cache add openrc php7 php7-fpm php7-json php7-zlib php7-xml php7-phar php7-iconv php7-mcrypt curl php7-curl php7-openssl php7-gd
 mkdir -p /var/run/php
 chown nginx:nginx /var/run/php/
 echo SETTING PHP ENV VARS
